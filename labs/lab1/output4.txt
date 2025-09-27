@@ -1,0 +1,10 @@
+73216202
+5
+7
+5
+112
+10
+True
+False
+Function p
+2

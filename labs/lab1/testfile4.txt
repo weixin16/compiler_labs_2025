@@ -1,0 +1,42 @@
+/*
+#include <stdio.h>
+#define a 2
+*/
+const int a = 2;
+
+int f(int x){
+    return x+a;
+}
+void p(){
+    printf("Function p\n");
+}
+
+int main() {
+    printf("73216202\n");   // 1. 73216202
+    int b = a + 3;
+    printf("%d\n", b);      //2. 5
+    int c = 5;
+    printf("%d\n", f(c));   //3. 7
+    printf("%d\n",c);       //4. 5
+    int d = (15+13)*4;
+    printf("%d\n", d);      //5. 112
+    int e =0;
+    for(e=0; e<10; e=e+1){
+        ;
+    }
+    printf("%d\n", e);      //6. 10
+    if(!0){
+        printf("True\n");    //7. True
+    } else {
+        printf("False\n");  // (not printed)
+    }
+    if(!1){
+        printf("True\n");   // (not printed)
+    } else {
+        printf("False\n");  //8. False
+    }
+    p();                    //9. Function p
+    printf("%d\n", ((4+7*9)%5));      //10. 2
+    
+    return 0;
+}

@@ -1,0 +1,54 @@
+/*
+#include <stdio.h>
+*/
+int f(int arr[], int start, int len){
+    int i=0, sum=0;
+    for(i=0; i<len; i=i+1){
+        sum=sum+arr[start+i];
+    }
+    return sum;
+}
+
+int f2(){
+    return 10;
+}
+
+int main() {
+    printf("73216202\n");       // 1. 73216202
+    int a[5]={1,2,3,4,5};
+    a[0] = a[1] + a[2]*2 - a[3];
+    printf("%d\n", a[0]);       // 2. 4
+    printf("%d\n", f(a,1,3));   // 3. 9
+    printf("%d\n", f2());       // 4. 10
+    if(5==6){
+        printf("Yes\n");
+    } else {
+        printf("No\n");     // 5. No
+    }
+    if(5!=6){
+        printf("Yes\n");
+    } else {
+        printf("No\n");     // 6. Yes
+    }
+    if(5>3){
+        printf("Yes\n");
+    } else {
+        printf("No\n");    // 7. Yes
+    }           
+    if(5<3){
+        printf("Yes\n");
+    } else {
+        printf("No\n");    // 8. No
+    }
+    if(5>=5){
+        printf("Yes\n");
+    } else {
+        printf("No\n");    // 9. Yes
+    }
+    if(5<=3){
+        printf("Yes\n");
+    } else {
+        printf("No\n");    // 10. No
+    }
+    return 0;
+}
