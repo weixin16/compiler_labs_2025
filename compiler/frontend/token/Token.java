@@ -1,4 +1,4 @@
-package frontend;
+package frontend.token;
 
 public class Token {
     private final String lexeme;

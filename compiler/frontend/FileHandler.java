@@ -1,5 +1,8 @@
 package frontend;
 
+import frontend.token.Token;
+import frontend.token.TokenType;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -10,7 +13,6 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class FileHandler {
-
     public static String readTestFile() throws IOException {
         return Files.readString(Paths.get("testfile.txt"), StandardCharsets.UTF_8);
 
@@ -20,6 +22,7 @@ public class FileHandler {
         new File("lexer.txt").delete();
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("lexer.txt"))) {
             for (Token token : tokens) {
+                if(token.getTokenType()== TokenType.EOF) continue;
                 bw.write(token.getTokenType().toString() + " " + token.getLexeme());
                 bw.newLine();
             }
@@ -29,8 +32,18 @@ public class FileHandler {
     public static void writeErrorFile(List<String> errors) throws IOException {
         new File("error.txt").delete();
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("error.txt"))) {
-            for (String error : errors) {
+            for(String error : errors){
                 bw.write(error);
+                bw.newLine();
+            }
+        }
+    }
+
+    public static void writeParserFile(List<String> strings) throws IOException {
+        new File("parser.txt").delete();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("parser.txt"))) {
+            for (String string : strings) {
+                bw.write(string);
                 bw.newLine();
             }
         }

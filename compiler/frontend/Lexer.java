@@ -1,5 +1,10 @@
 package frontend;
 
+import frontend.error.Error;
+import frontend.error.ErrorList;
+import frontend.token.Token;
+import frontend.token.TokenType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,9 +18,17 @@ public class Lexer {
     private final Map<String, TokenType> reserveWords = new HashMap<>();
     private final Map<Character, TokenType> singleCharSymbols = new HashMap<>();
     private final List<Token> tokens = new ArrayList<>();
-    private final List<String> errors = new ArrayList<>();
     private int lineNum=1;
     private boolean hasError;
+    private static final boolean REPAIR_LOGIC_OP = true;
+
+    public List<Token> getTokens() {
+        return tokens;
+    }
+
+    public boolean hasError() {
+        return hasError;
+    }
     
     public void analyze(String sourceCode) {
         initLexer(sourceCode);
@@ -69,6 +82,8 @@ public class Lexer {
                 tokens.add(new Token(token, tokenType, lineNum));
             }
         }
+        int lastLine = tokens.isEmpty() ? 1 : tokens.get(tokens.size()-1).getLineNum();
+        tokens.add(new Token("", TokenType.EOF, lastLine));
     }
 
     private void next() {
@@ -153,8 +168,15 @@ public class Lexer {
                 token="&&";
                 tokenType=TokenType.AND;
             } else {
-                addError(lineNum,"a");
-                tokenType=null;
+                Error error = new Error("a", lineNum);
+                ErrorList.addErrors(error);
+                hasError=true;
+                if (REPAIR_LOGIC_OP) {
+                    token="&";
+                    tokenType=TokenType.AND;
+                } else {
+                    token=null;
+                }
             }
         } else if (c == '|') {
             if(curPos<source.length() && source.charAt(curPos)=='|'){
@@ -162,8 +184,15 @@ public class Lexer {
                 token="||";
                 tokenType=TokenType.OR;
             } else {
-                addError(lineNum,"a");
-                tokenType=null;
+                Error error = new Error("a", lineNum);
+                ErrorList.addErrors(error);
+                hasError=true;
+                if (REPAIR_LOGIC_OP) {
+                    token="|";
+                    tokenType=TokenType.OR;
+                } else {
+                    token=null;
+                }
             }
         }
         // '/'
@@ -192,7 +221,6 @@ public class Lexer {
                             lineNum++;
                         }
                     }
-                    return;
                 }
                 //除号
                 else {
@@ -217,22 +245,6 @@ public class Lexer {
         }
     }
 
-    private void addError(Integer lineNum, String level){
-        hasError=true;
-        errors.add( lineNum + " " + level);
-    }
-
-    public List<Token> getTokens() {
-        return tokens;
-    }
-    
-    public List<String> getErrors() {
-        return errors;
-    }
-    
-    public boolean hasError() {
-        return hasError;
-    }
        
 }
 

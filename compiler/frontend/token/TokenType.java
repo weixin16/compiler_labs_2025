@@ -1,4 +1,4 @@
-package frontend;
+package frontend.token;
 
 public enum TokenType {
     IDENFR, INTCON, STRCON,
@@ -10,7 +10,8 @@ public enum TokenType {
     LSS, LEQ, GRE, GEQ, EQL, NEQ, ASSIGN,
     SEMICN, COMMA, 
     LPARENT, RPARENT, LBRACK, RBRACK, LBRACE, RBRACE,
-    PRINTFTK;
+    PRINTFTK,
+    EOF;
 
     @Override
     public String toString() {
