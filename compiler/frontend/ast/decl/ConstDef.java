@@ -39,4 +39,8 @@ public class ConstDef extends Decl {
     public ConstDef(int lineNum){
         super(lineNum);
     }
+
+    public boolean isArray(){
+        return array!=null;
+    }
 }

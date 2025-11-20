@@ -39,4 +39,8 @@ public class VarDef extends Decl {
     public void setInitVal(InitVal initVal) {
         this.initVal = initVal;
     }
+
+    public boolean isArray(){
+        return array!=null;
+    }
 }

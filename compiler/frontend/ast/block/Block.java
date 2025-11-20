@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class Block extends ASTNode {
     private final List<BlockItem> blockItems = new ArrayList<>();
+    private int EndLine;
 
     public Block(int lineNum){
         super(lineNum);
@@ -23,5 +24,13 @@ public class Block extends ASTNode {
 
     public void addBlockItem(BlockItem blockItem){
         blockItems.add(blockItem);
+    }
+
+    public int getEndLine() {
+        return EndLine;
+    }
+
+    public void setEndLine(int endLine) {
+        EndLine = endLine;
     }
 }

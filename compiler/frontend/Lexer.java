@@ -19,15 +19,10 @@ public class Lexer {
     private final Map<Character, TokenType> singleCharSymbols = new HashMap<>();
     private final List<Token> tokens = new ArrayList<>();
     private int lineNum=1;
-    private boolean hasError;
     private static final boolean REPAIR_LOGIC_OP = true;
 
     public List<Token> getTokens() {
         return tokens;
-    }
-
-    public boolean hasError() {
-        return hasError;
     }
     
     public void analyze(String sourceCode) {
@@ -170,7 +165,6 @@ public class Lexer {
             } else {
                 Error error = new Error("a", lineNum);
                 ErrorList.addErrors(error);
-                hasError=true;
                 if (REPAIR_LOGIC_OP) {
                     token="&";
                     tokenType=TokenType.AND;
@@ -186,7 +180,6 @@ public class Lexer {
             } else {
                 Error error = new Error("a", lineNum);
                 ErrorList.addErrors(error);
-                hasError=true;
                 if (REPAIR_LOGIC_OP) {
                     token="|";
                     tokenType=TokenType.OR;

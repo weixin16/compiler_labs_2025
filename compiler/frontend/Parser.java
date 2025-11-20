@@ -20,15 +20,10 @@ public class Parser {
     private final List<Token> tokens;
     private int pos = 0;
     private final List<String> outputs = new ArrayList<>();
-    private  boolean hasError = false;
     private final boolean debug = true;
 
     public Parser(List<Token> tokens) {
         this.tokens = tokens;
-    }
-
-    public boolean hasError() {
-        return hasError;
     }
 
     public List<String> getOutputs() {
@@ -36,8 +31,8 @@ public class Parser {
     }
 
     // =================== 入口 ===================
-    public void parse() throws IOException {
-        parseCompUnit();
+    public CompUnit analyze() throws IOException {
+        return parseCompUnit();
     }
 
     // ================== 工具函数 ==================
@@ -71,7 +66,6 @@ public class Parser {
         if(errorType!=null){
             frontend.error.Error error = new Error(errorType, errorLine());
             ErrorList.addErrors(error);
-            hasError=true;
         }
 
         Token t = peek();
@@ -93,7 +87,7 @@ public class Parser {
 
         return switch (expected) {
             case SEMICN -> type == TokenType.SEMICN;
-            case RPARENT -> type == TokenType.RPARENT || type == TokenType.SEMICN;
+            case RPARENT -> type == TokenType.RPARENT || type == TokenType.SEMICN || type==TokenType.RBRACK;
             case RBRACK -> type == TokenType.RBRACK || type == TokenType.SEMICN ||
                     type == TokenType.COMMA || type == TokenType.ASSIGN  || type==TokenType.RPARENT ;
             default -> false;
@@ -505,11 +499,11 @@ public class Parser {
 
         if(match(TokenType.LBRACK)){
             if (consume(TokenType.LBRACK) != null) {
+                funcFParam.setArray(true);
                 if(!match(TokenType.RBRACK)){
                     error(TokenType.RBRACK);
                 } else {
                     consume(TokenType.RBRACK);
-                    funcFParam.setArray(true);
                 }
 
             }
@@ -549,6 +543,7 @@ public class Parser {
         while (!match(TokenType.RBRACE) && peek()!=null){
             block.addBlockItem(parseBlockItem());
         }
+        block.setEndLine(lineNum());
         consume(TokenType.RBRACE);
         printNT("<Block>");
         return block;
@@ -611,6 +606,7 @@ public class Parser {
         }
 
         if(match(TokenType.BREAKTK)){
+            int lineNum=lineNum();
             consume(TokenType.BREAKTK);
             if (!match(TokenType.SEMICN)){
                 error(TokenType.SEMICN);
@@ -618,10 +614,11 @@ public class Parser {
                 consume(TokenType.SEMICN);
             }
             printNT("<Stmt>");
-            return new BreakStmt(lineNum());
+            return new BreakStmt(lineNum);
         }
 
         if(match(TokenType.CONTINUETK)){
+            int lineNum=lineNum();
             consume(TokenType.CONTINUETK);
             if (!match(TokenType.SEMICN)){
                 error(TokenType.SEMICN);
@@ -629,10 +626,11 @@ public class Parser {
                 consume(TokenType.SEMICN);
             }
             printNT("<Stmt>");
-            return new ContinueStmt(lineNum()); 
+            return new ContinueStmt(lineNum);
         }
 
         if(match(TokenType.RETURNTK)){
+            int lineNum=lineNum();
             consume(TokenType.RETURNTK);
             Exp exp = null;
             if(!match(TokenType.SEMICN)){
@@ -644,7 +642,7 @@ public class Parser {
                 consume(TokenType.SEMICN);
             }
             printNT("<Stmt>");
-            return new ReturnStmt(lineNum(), exp);
+            return new ReturnStmt(lineNum, exp);
         }
 
         if(match(TokenType.PRINTFTK)){

@@ -2,6 +2,8 @@ package frontend.ast.func;
 
 import frontend.ast.ASTNode;
 
+import java.util.Objects;
+
 public class FuncType extends ASTNode {
     private final String funcType;
 
@@ -12,5 +14,9 @@ public class FuncType extends ASTNode {
 
     public String getFuncType() {
         return funcType;
+    }
+
+    public boolean isInt(){
+        return Objects.equals(funcType, "int");
     }
 }

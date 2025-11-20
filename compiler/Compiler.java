@@ -1,3 +1,4 @@
+import frontend.Visitor;
 import frontend.ast.CompUnit;
 import frontend.error.ErrorList;
 import frontend.FileHandler;
@@ -7,7 +8,6 @@ import frontend.Parser;
 import java.io.IOException;
 
 public class Compiler {
-    public static ErrorList errors;
     public static void main(String[] args) {
         try {
             ErrorList.clear();
@@ -16,15 +16,18 @@ public class Compiler {
             lexer.analyze(sourceCode);
 
             Parser parser = new Parser(lexer.getTokens());
-            parser.parse();
+            CompUnit ast = parser.analyze();
 
-            if (!lexer.hasError() && !parser.hasError()) {
+            Visitor visitor = new Visitor(ast);
+            visitor.analyze();
+
+            if (ErrorList.getErrors().isEmpty()) {
                 FileHandler.writeLexerFile(lexer.getTokens());
                 FileHandler.writeParserFile(parser.getOutputs());
+                FileHandler.writeSymbolFile(visitor.getAllSymbols());
             } else {
                 FileHandler.writeErrorFile(ErrorList.getErrors());
             }
-
 
         } catch (IOException e) {
             System.err.println(e.getMessage());

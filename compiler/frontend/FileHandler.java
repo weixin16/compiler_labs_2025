@@ -1,5 +1,6 @@
 package frontend;
 
+import frontend.symbol.Symbol;
 import frontend.token.Token;
 import frontend.token.TokenType;
 
@@ -27,6 +28,7 @@ public class FileHandler {
                 bw.newLine();
             }
         }
+
     }
 
     public static void writeErrorFile(List<String> errors) throws IOException {
@@ -44,6 +46,17 @@ public class FileHandler {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("parser.txt"))) {
             for (String string : strings) {
                 bw.write(string);
+                bw.newLine();
+            }
+        }
+    }
+
+    public static void writeSymbolFile(List<Symbol> symbols) throws  IOException {
+        new File("symbol.txt").delete();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("symbol.txt"))) {
+            for (Symbol symbol : symbols){
+                if(symbol.getName().equals("getint")) continue;
+                bw.write(symbol.getScopeId() + " " + symbol.getName() + " " + symbol.getType().name());
                 bw.newLine();
             }
         }
