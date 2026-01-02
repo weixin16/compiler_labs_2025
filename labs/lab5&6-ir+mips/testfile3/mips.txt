@@ -1,0 +1,126 @@
+.data
+.str0: .asciiz "\n"
+.text
+  move $fp, $sp
+  jal main
+  li $v0, 10
+  syscall
+pack:
+    addiu $sp, $sp, -96
+    sw $ra, 92($sp)
+    sw $fp, 88($sp)
+    move $fp, $sp
+    move $t0, $a0
+    move $t1, $a1
+    move $t2, $a2
+    move $t3, $a3
+    lw $t4, 96($fp)
+    lw $t5, 100($fp)
+    move $t6, $t0
+    move $t7, $t1
+    sw $t0, 0($fp)
+    li $t0, 10
+    mul $t0, $t0, $t7
+    sw $t0, 32($fp)
+    addu $t0, $t6, $t0
+    sw $t0, 36($fp)
+    move $t0, $t2
+    sw $t0, 40($fp)
+    li $t0, 100
+    sw $t1, 4($fp)
+    lw $t1, 40($fp)
+    mul $t0, $t0, $t1
+    sw $t0, 44($fp)
+    lw $t0, 36($fp)
+    lw $t1, 44($fp)
+    addu $t0, $t0, $t1
+    sw $t0, 48($fp)
+    move $t0, $t3
+    sw $t0, 52($fp)
+    li $t0, 1000
+    lw $t1, 52($fp)
+    mul $t0, $t0, $t1
+    sw $t0, 56($fp)
+    lw $t0, 48($fp)
+    lw $t1, 56($fp)
+    addu $t0, $t0, $t1
+    sw $t0, 60($fp)
+    move $t0, $t4
+    sw $t0, 64($fp)
+    li $t0, 10000
+    lw $t1, 64($fp)
+    mul $t0, $t0, $t1
+    sw $t0, 68($fp)
+    lw $t0, 60($fp)
+    lw $t1, 68($fp)
+    addu $t0, $t0, $t1
+    sw $t0, 72($fp)
+    move $t0, $t5
+    sw $t0, 76($fp)
+    li $t0, 100000
+    lw $t1, 76($fp)
+    mul $t0, $t0, $t1
+    sw $t0, 80($fp)
+    lw $t0, 72($fp)
+    lw $t1, 80($fp)
+    addu $t0, $t0, $t1
+    move $v0, $t0
+    sw $t7, 28($fp)
+    sw $t3, 12($fp)
+    sw $t0, 84($fp)
+    sw $t5, 20($fp)
+    sw $t4, 16($fp)
+    sw $t6, 24($fp)
+    sw $t2, 8($fp)
+    j pack_ret
+pack_ret:
+    move $sp, $fp
+    lw $fp, 88($sp)
+    lw $ra, 92($sp)
+    addiu $sp, $sp, 96
+    jr $ra
+main:
+    addiu $sp, $sp, -28
+    sw $ra, 24($sp)
+    sw $fp, 20($sp)
+    move $fp, $sp
+    move $t0, $a0
+    sw $t0, 4($fp)
+    addiu $sp, $sp, -8
+    li $t0, 1
+    move $a0, $t0
+    li $t1, 2
+    move $a1, $t1
+    li $t2, 3
+    move $a2, $t2
+    li $t3, 4
+    move $a3, $t3
+    li $t4, 5
+    sw $t4, 0($sp)
+    li $t5, 6
+    sw $t5, 4($sp)
+    jal pack
+    addiu $sp, $sp, 8
+    sw $v0, 8($fp)
+    lw $t6, 8($fp)
+    move $t7, $t6
+    move $t0, $t7
+    sw $t0, 12($fp)
+    move $t0, $t0
+    move $a0, $t0
+    li $v0, 1
+   syscall
+    la $a0, .str0
+    li $v0, 4
+   syscall
+    sw $t0, 16($fp)
+    li $t0, 0
+    move $v0, $t0
+    sw $t7, 0($fp)
+    j main_ret
+main_ret:
+    move $sp, $fp
+    lw $fp, 20($sp)
+    lw $ra, 24($sp)
+    addiu $sp, $sp, 28
+    jr $ra

@@ -1,0 +1,11 @@
+func f
+print_str "x is 2 "
+ret 1
+endfunc f
+func main
+call f, 0, t1
+move t1, t2
+print_str "test is "
+print_int t2
+ret 0
+endfunc main

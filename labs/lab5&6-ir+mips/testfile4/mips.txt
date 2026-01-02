@@ -1,0 +1,40 @@
+.data
+.str0: .asciiz "1 "
+.str1: .asciiz "0 "
+.text
+  move $fp, $sp
+  jal main
+  li $v0, 10
+  syscall
+main:
+    addiu $sp, $sp, -8
+    sw $ra, 4($sp)
+    sw $fp, 0($sp)
+    move $fp, $sp
+    li $t0, 1
+    beq $t0, $zero, L4_next
+    j L3_pass
+L4_next:
+    li $t0, 1
+    beq $t0, $zero, L1_if_else
+    li $t0, 1
+    beq $t0, $zero, L1_if_else
+L3_pass:
+    la $a0, .str0
+    li $v0, 4
+   syscall
+    j L2_if_end
+L1_if_else:
+    la $a0, .str1
+    li $v0, 4
+   syscall
+L2_if_end:
+    li $t0, 0
+    move $v0, $t0
+    j main_ret
+main_ret:
+    move $sp, $fp
+    lw $fp, 0($sp)
+    lw $ra, 4($sp)
+    addiu $sp, $sp, 8
+    jr $ra

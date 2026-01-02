@@ -1,0 +1,40 @@
+int a[1] = {7};
+const int b[1] = {2};
+
+int func1(int a[]) {
+    // 函数中使用数组，看看会不会用错了作用域
+    a[0] = b[0];
+    printf("%d\n", a[0]);
+    return 0;
+}
+
+int main() {
+    int a2[2] = {a[0], 1};
+    printf("%d\n", a2[0]);
+
+    // 连续的def，是否能够用前面定义的变量
+    const int a = 3, b[3] = {a / 3, a, 1};
+    printf("%d\n", b[0]);
+
+    // 初始化
+    const int char_a = 5;
+    const int int_b[5] = {char_a, char_a, char_a};
+    printf("%d\n", int_b[0]);
+
+    // 常量表达式
+    int int_c[5] = {char_a, int_b[1] + char_a};
+    printf("%d\n", int_c[1]);
+
+    {
+        // 内部作用域对外部常量引用
+        int inner[5] = {int_b[1]};
+        printf("%d\n", inner[0]);
+    }
+
+    // 查看函数中是否能赋值
+    printf("%d\n", int_c[0]);
+    func1(int_c);
+    printf("%d\n", int_c[0]);
+
+    return 0;
+}

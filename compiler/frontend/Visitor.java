@@ -55,6 +55,10 @@ public class Visitor {
         return symbolManager.getAllSymbols();
     }
 
+    public SymbolManager getSymbolManager(){
+        return symbolManager;
+    }
+
     // ================== visit 函数 ==================
     // 编译单元 CompUnit → {Decl} {FuncDef} MainFuncDef
     private void visitCompUnit(){

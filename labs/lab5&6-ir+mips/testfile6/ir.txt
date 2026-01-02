@@ -1,0 +1,73 @@
+gdecl g_a, 1
+ginitarr 7, 0, g_a
+gdecl g_b, 1
+ginitarr 2, 0, g_b
+func func1
+fparam_arr p2_a
+loadarr g_b, 0, t1
+storearr t1, 0, p2_a
+loadarr p2_a, 0, t2
+move t2, t3
+print_int t3
+print_str "\n"
+ret 0
+endfunc func1
+func main
+decl v3_a2, 2
+loadarr g_a, 0, t4
+storearr t4, 0, v3_a2
+storearr 1, 1, v3_a2
+loadarr v3_a2, 0, t5
+move t5, t6
+print_int t6
+print_str "\n"
+decl v3_a, 1
+move 3, v3_a
+decl v3_b, 3
+storearr 1, 0, v3_b
+storearr 3, 1, v3_b
+storearr 1, 2, v3_b
+loadarr v3_b, 0, t7
+move t7, t8
+print_int t8
+print_str "\n"
+decl v3_char_a, 1
+move 5, v3_char_a
+decl v3_int_b, 5
+storearr 5, 0, v3_int_b
+storearr 5, 1, v3_int_b
+storearr 5, 2, v3_int_b
+loadarr v3_int_b, 0, t9
+move t9, t10
+print_int t10
+print_str "\n"
+decl v3_int_c, 5
+load v3_char_a, t11
+storearr t11, 0, v3_int_c
+loadarr v3_int_b, 1, t12
+load v3_char_a, t13
+add t12, t13, t14
+storearr t14, 1, v3_int_c
+loadarr v3_int_c, 1, t15
+move t15, t16
+print_int t16
+print_str "\n"
+decl v4_inner, 5
+loadarr v3_int_b, 1, t17
+storearr t17, 0, v4_inner
+loadarr v4_inner, 0, t18
+move t18, t19
+print_int t19
+print_str "\n"
+loadarr v3_int_c, 0, t20
+move t20, t21
+print_int t21
+print_str "\n"
+param_addr v3_int_c
+call func1, 1, t22
+loadarr v3_int_c, 0, t23
+move t23, t24
+print_int t24
+print_str "\n"
+ret 0
+endfunc main

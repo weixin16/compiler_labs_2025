@@ -1,0 +1,14 @@
+func main
+bez 1, L4_next
+j L3_pass
+L4_next:
+bez 1, L1_if_else
+bez 1, L1_if_else
+L3_pass:
+print_str "1 "
+j L2_if_end
+L1_if_else:
+print_str "0 "
+L2_if_end:
+ret 0
+endfunc main

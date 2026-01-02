@@ -84,4 +84,12 @@ public class Symbol {
         return type==SymbolType.VoidFunc || type==SymbolType.IntFunc;
     }
 
+    public boolean isVoidFunc(){
+        return type==SymbolType.VoidFunc;
+    }
+
+    public boolean isStatic() {
+        return type==SymbolType.StaticInt || type==SymbolType.StaticIntArray;
+    }
+
 }

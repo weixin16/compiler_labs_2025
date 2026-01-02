@@ -1,0 +1,50 @@
+.data
+.str0: .asciiz "x is 2 "
+.str1: .asciiz "test is "
+.text
+  move $fp, $sp
+  jal main
+  li $v0, 10
+  syscall
+f:
+    addiu $sp, $sp, -8
+    sw $ra, 4($sp)
+    sw $fp, 0($sp)
+    move $fp, $sp
+    la $a0, .str0
+    li $v0, 4
+   syscall
+    li $t0, 1
+    move $v0, $t0
+    j f_ret
+f_ret:
+    move $sp, $fp
+    lw $fp, 0($sp)
+    lw $ra, 4($sp)
+    addiu $sp, $sp, 8
+    jr $ra
+main:
+    addiu $sp, $sp, -20
+    sw $ra, 16($sp)
+    sw $fp, 12($sp)
+    move $fp, $sp
+    jal f
+    sw $v0, 0($fp)
+    lw $t0, 0($fp)
+    move $t1, $t0
+    la $a0, .str1
+    li $v0, 4
+   syscall
+    move $a0, $t1
+    li $v0, 1
+   syscall
+    li $t2, 0
+    move $v0, $t2
+    sw $t1, 4($fp)
+    j main_ret
+main_ret:
+    move $sp, $fp
+    lw $fp, 12($sp)
+    lw $ra, 16($sp)
+    addiu $sp, $sp, 20
+    jr $ra

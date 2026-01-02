@@ -1,0 +1,64 @@
+.data
+s3_x: .word -10
+.str0: .asciiz " "
+.text
+  move $fp, $sp
+  jal main
+  li $v0, 10
+  syscall
+main:
+    addiu $sp, $sp, -44
+    sw $ra, 40($sp)
+    sw $fp, 36($sp)
+    move $fp, $sp
+    li $t0, 0
+    move $t1, $t0
+    li $t0, 0
+    move $t1, $t0
+    sw $t1, 0($fp)
+L1_for_cond:
+    lw $t0, 0($fp)
+    move $t1, $t0
+    li $t2, 10
+    slt $t3, $t1, $t2
+    sw $t3, 8($fp)
+    sw $t1, 4($fp)
+    beq $t3, $zero, L3_for_end
+  lw $t0, s3_x
+    move $t1, $t0
+    li $t2, 2
+    addu $t3, $t1, $t2
+    move $t0, $t3
+    move $t4, $t0
+    move $t5, $t4
+    move $a0, $t5
+    li $v0, 1
+   syscall
+    la $a0, .str0
+    li $v0, 4
+   syscall
+    sw $t5, 24($fp)
+    sw $t3, 16($fp)
+    sw $t4, 20($fp)
+  sw $t0, s3_x
+    sw $t1, 12($fp)
+L2_for_step:
+    lw $t0, 0($fp)
+    move $t1, $t0
+    li $t2, 1
+    addu $t3, $t1, $t2
+    move $t0, $t3
+    sw $t3, 32($fp)
+    sw $t0, 0($fp)
+    sw $t1, 28($fp)
+    j L1_for_cond
+L3_for_end:
+    li $t0, 0
+    move $v0, $t0
+    j main_ret
+main_ret:
+    move $sp, $fp
+    lw $fp, 36($sp)
+    lw $ra, 40($sp)
+    addiu $sp, $sp, 44
+    jr $ra

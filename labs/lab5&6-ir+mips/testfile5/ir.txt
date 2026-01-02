@@ -1,0 +1,22 @@
+gdecl g_a, 3
+ginitarr 1, 0, g_a
+ginitarr 2, 1, g_a
+ginitarr 3, 2, g_a
+func func1
+fparam_arr p2_b
+loadarr p2_b, 1, t1
+move t1, t2
+print_int t2
+ret 0
+endfunc func1
+func func2
+fparam_arr p3_bb
+param_addr p3_bb
+call func1, 1
+ret 0
+endfunc func2
+func main
+param_addr g_a
+call func2, 1
+ret 0
+endfunc main

@@ -3,6 +3,7 @@ package frontend;
 import frontend.symbol.Symbol;
 import frontend.token.Token;
 import frontend.token.TokenType;
+import midend.ir.Quad;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -62,5 +63,23 @@ public class FileHandler {
         }
     }
 
+    public static void writeIRFile(List<Quad> quads) throws IOException{
+        new File("ir.txt").delete();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("ir.txt"))) {
+            for (Quad quad:quads){
+                bw.write(quad.toString());
+                bw.newLine();
+            }
+        }
+    }
 
+    public static void writeMipsFile(List<String> mipsCode) throws IOException{
+        new File("mips.txt").delete();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("mips.txt"))) {
+            for (String mips: mipsCode){
+                bw.write(mips);
+                bw.newLine();
+            }
+        }
+    }
 }
