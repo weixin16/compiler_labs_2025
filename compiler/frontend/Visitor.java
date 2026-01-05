@@ -101,6 +101,21 @@ public class Visitor {
 
         Symbol symbol = new Symbol(name,type,scopeId,lineNum);
         addSymbol(symbol,lineNum);
+
+        
+        if(isArray){
+            visitConstExp(constDef.getArray());
+        }
+
+        visitConstInitVal(constDef.getConstInitVal());
+    }
+
+    // 常量初值 ConstInitVal → ConstExp | '{' [ ConstExp { ',' ConstExp } ] '}'
+    private void visitConstInitVal(ConstInitVal constInitVal){
+        if (constInitVal==null) return;
+        for(ConstExp constExp: constInitVal.getConstExps()){
+            visitConstExp(constExp);
+        }
     }
 
     // 变量声明 VarDecl → [ 'static' ] BType VarDef { ',' VarDef } ';'
@@ -123,8 +138,20 @@ public class Visitor {
         int lineNum = varDef.getLineNum();
 
         Symbol symbol = new Symbol(name,type,scopeId,lineNum);
-
         addSymbol(symbol,lineNum);
+
+        if(isArray){
+            visitConstExp(varDef.getArray());
+        }
+        visitInitVal(varDef.getInitVal());
+    }
+
+    // 变量初值 InitVal → Exp | '{' [ Exp { ',' Exp } ] '}'
+    private void visitInitVal(InitVal initVal){
+        if (initVal==null) return;
+        for(Exp exp: initVal.getExps()){
+            visitExp(exp);
+        }
     }
 
     // 函数定义 FuncDef → FuncType Ident '(' [FuncFParams] ')' Block

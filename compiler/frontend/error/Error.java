@@ -2,7 +2,7 @@ package frontend.error;
 
 public class Error {
     String errorType;
-    static Integer lineNum;
+    Integer lineNum;
 
     public Error(String errorType, Integer lineNum) {
         this.errorType = errorType;

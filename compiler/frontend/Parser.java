@@ -62,6 +62,7 @@ public class Parser {
             case SEMICN -> errorType="i";
             case RPARENT -> errorType="j";
             case RBRACK -> errorType="k";
+            default -> {}
         }
         if(errorType!=null){
             frontend.error.Error error = new Error(errorType, errorLine());
@@ -914,6 +915,11 @@ public class Parser {
         一元表达式 UnaryExp → PrimaryExp | Ident '(' [FuncRParams] ')' | UnaryOp UnaryExp
         3种情况均需覆盖,函数调用也需要覆盖FuncRParams的不同情况
     */
+    private boolean startsExp(TokenType tokenType){
+        return tokenType==TokenType.IDENFR || tokenType==TokenType.INTCON || tokenType==TokenType.LPARENT ||
+                tokenType==TokenType.PLUS || tokenType==TokenType.MINU || tokenType==TokenType.NOT;
+    }
+
     private UnaryExp parseUnaryExp(){
        UnaryExp unaryExp = new UnaryExp(lineNum());
 
@@ -923,14 +929,22 @@ public class Parser {
            Token ident = consume(TokenType.IDENFR);
            consume(TokenType.LPARENT);
            FuncRParams funcRParams = null;
-           //有实参
-           if(!match(TokenType.RPARENT)){
-               funcRParams = parseFuncRParams();
-           }
-           if(!match(TokenType.RPARENT)){
-               error(TokenType.RPARENT);
-           } else {
+           // func()
+           if(match(TokenType.RPARENT)){
                consume(TokenType.RPARENT);
+           }
+           // func(exp, exp, ...)
+           else if (peek()!=null && startsExp(peek().getTokenType())){
+               funcRParams = parseFuncRParams();
+               if(!match(TokenType.RPARENT)){
+                   error(TokenType.RPARENT);
+               } else {
+                   consume(TokenType.RPARENT);
+               }
+           }
+           //func(
+           else {
+               ErrorList.addErrors(new Error("j", errorLine()));
            }
            unaryExp.setCall(ident, funcRParams);
            printNT("<UnaryExp>");
