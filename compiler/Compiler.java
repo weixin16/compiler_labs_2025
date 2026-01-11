@@ -18,11 +18,11 @@ public class Compiler {
         LEXER, PARSER, SEMANTIC, IR, MIPS
     }
 
-    public static final Stage STAGE= Stage.LEXER;
+//    public static final Stage STAGE= Stage.LEXER;
 //    public static final Stage STAGE= Stage.PARSER;
 //    public static final Stage STAGE= Stage.SEMANTIC;
 //    public static final Stage STAGE= Stage.IR;
-//    public static final Stage STAGE= Stage.MIPS;
+    public static final Stage STAGE= Stage.MIPS;
 
     public static void main(String[] args) {
         try {
@@ -72,7 +72,7 @@ public class Compiler {
                 List<Quad> quads = irBuilder.getIr();
 
                 if(STAGE == Stage.IR){
-                    FileHandler.writeErrorFile(ErrorList.getErrors());
+                    FileHandler.writeIRFile(quads);
                     return;
                 }
 
